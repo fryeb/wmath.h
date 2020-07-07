@@ -10,6 +10,7 @@ test_cpp = library('test_cpp', 'test/test.cpp')
 
 tests = [
 	'zero',
+	'sum'
 ]
 
 foreach test_name : tests
