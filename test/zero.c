@@ -24,10 +24,21 @@
 #include "../wmath.h"
 #include <utest/utest.h>
 
-UTEST(utest, example) {
-	int32_t a = 2;
-	int32_t b = 3;
-	EXPECT_EQ(5, a + b);
+const size_t length = 65536;
+
+UTEST(zero, u8)
+{
+	ASSERT_EQ(length % WUINT8_WIDTH, 0);
+
+	uint8_t *pData = calloc(length, sizeof(uint8_t));
+	wuint8_t total = wsetu8(0);
+
+	for (size_t i = 0; i < length; i += WUINT8_WIDTH) {
+		wuint8_t a = wloadu8((wuint8_t *)&pData[i]);
+		total = waddu8(total, a);
+	}
+
+	EXPECT_EQ(0, whaddu8(total));
 }
 
 UTEST_MAIN();
