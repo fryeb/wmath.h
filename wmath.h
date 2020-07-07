@@ -45,7 +45,7 @@ extern "C" {
 	WINLINE w##t##_t wset##s(t##_t a) { return a; }                        \
 	WINLINE w##t##_t wload##s(t##_t const *addr) { return *addr; }         \
 	WINLINE w##t##_t wadd##s(w##t##_t a, w##t##_t b) { return a + b; }     \
-	WINLINE whadd##s(w##t##_t a) { return a; };                            \
+	WINLINE t##_t whadd##s(w##t##_t a) { return a; };                      \
 	// WINLINE w##t##_t wsub##s(w##t##_t a, w##t##_t b) { return a - b; }
 	// WINLINE w##t##_t wmul##s(w##t##_t a, w##t##_t b) { return a * b; }
 	// WINLINE w##t##_t wdiv##s(w##t##_t a, w##t##_t b) { return a / b; }
