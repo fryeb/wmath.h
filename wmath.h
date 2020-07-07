@@ -35,6 +35,43 @@ extern "C" {
 
 #include <stdint.h>
 
+#ifdef WMATH_FORCE_SCALAR
+
+#define WMATH_DEFINE(t, s, T)                                                  \
+	enum { W##T##_WIDTH = 1 };                                             \
+	typedef t##_t w##t##_t;                                                \
+	inline w##t##_t wset##s(t##_t a) { return a; }                         \
+	inline w##t##_t wload##s(t##_t const *addr) { return *addr; }          \
+	inline w##t##_t wadd##s(w##t##_t a, w##t##_t b) { return a + b; };     \
+	inline t##_t whadd##s(w##t##_t a) { return a; };                       \
+	// TODO: inline w##t##_t wsub##s(w##t##_t a, w##t##_t b) { return a + b; };     \
+	// TODO: inline w##t##_t wmul##s(w##t##_t a, w##t##_t b) { return a + b; };     \
+	// TODO: inline w##t##_t wdiv##s(w##t##_t a, w##t##_t b) { return a + b; };
+
+WMATH_DEFINE(int8, i8, INT8)
+WMATH_DEFINE(int16, i16, INT16)
+WMATH_DEFINE(int32, i32, INT32)
+WMATH_DEFINE(int64, i64, INT64)
+WMATH_DEFINE(uint8, u8, UINT8)
+WMATH_DEFINE(uint16, u16, UINT16)
+WMATH_DEFINE(uint32, u32, UINT32)
+WMATH_DEFINE(uint64, u64, UINT64)
+
+#define float_t float
+WMATH_DEFINE(float, f, FLOAT)
+#undef float_t
+#define double_t double
+WMATH_DEFINE(double, d, DOUBLE)
+#undef double_t
+#undef WMATH_DEFINE
+
+#else /* WMATH_FORCE_SCALAR */
+
+#include <immintrin.h>
+// TODO
+
+#endif /* WMATH_FORCE_SCALAR */
+
 #ifdef __cplusplus
 }
 #endif
