@@ -26,19 +26,19 @@
 
 const size_t length = 65536;
 
-#define TEST_ZERO(t, s, max, width) \
-	UTEST(zero, s) \
-	{\
-		/* Generate List */ \
-		t##_t *data = calloc(length, sizeof(t##_t));\
-		ASSERT_EQ(length % width, 0);\
-		w##t##_t total = wset##s(0);\
-		for (size_t i = 0; i < length; i += width) {\
-			w##t##_t a = wload##s((w##t##_t*) &data[i]);\
-			total = wadd##s(total, a);\
-		}\
-		EXPECT_EQ(0, whadd##s(total));\
-	}\
+#define TEST_ZERO(t, s, max, width)                                                                \
+	UTEST(zero, s)                                                                             \
+	{                                                                                          \
+		/* Generate List */                                                                \
+		t##_t *data = calloc(length, sizeof(t##_t));                                       \
+		ASSERT_EQ(length % width, 0);                                                      \
+		w##t##_t total = wset##s(0);                                                       \
+		for (size_t i = 0; i < length; i += width) {                                       \
+			w##t##_t a = wload##s##u((w##t##_t *)&data[i]);                            \
+			total = wadd##s(total, a);                                                 \
+		}                                                                                  \
+		EXPECT_EQ(0, whadd##s(total));                                                     \
+	}
 
 TEST_ZERO(uint8, u8, UINT8_MAX, WUINT8_WIDTH)
 TEST_ZERO(uint16, u16, UINT16_MAX, WUINT16_WIDTH)
