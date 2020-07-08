@@ -50,10 +50,10 @@ extern "C" {
 	// WINLINE w##t##_t wmul##s(w##t##_t a, w##t##_t b) { return a * b; }
 	// WINLINE w##t##_t wdiv##s(w##t##_t a, w##t##_t b) { return a / b; }
 
-// WMATH_DEFINE(int8, i8, INT8)
-// WMATH_DEFINE(int16, i16, INT16)
-// WMATH_DEFINE(int32, i32, INT32)
-// WMATH_DEFINE(int64, i64, INT64)
+WMATH_DEFINE(int8, i8, INT8)
+WMATH_DEFINE(int16, i16, INT16)
+WMATH_DEFINE(int32, i32, INT32)
+WMATH_DEFINE(int64, i64, INT64)
 WMATH_DEFINE(uint8, u8, UINT8)
 WMATH_DEFINE(uint16, u16, UINT16)
 WMATH_DEFINE(uint32, u32, UINT32)
@@ -94,14 +94,45 @@ WMATH_DEFINE(uint64, u64, UINT64)
 		return result;                                                 \
 	}
 
+#define WIMATH_DEFINE(n)                                                       \
+	enum { WINT##n##_WIDTH = (256) / (n) };                                \
+	typedef __m256i wint##n##_t;                                           \
+	WINLINE wint##n##_t wseti##n(int##n##_t a)                             \
+	{                                                                      \
+		return _mm256_set1_epi##n(a);                                  \
+	}                                                                      \
+	WINLINE wint##n##_t wloadi##n(wint##n##_t const *a)                    \
+	{                                                                      \
+		return _mm256_loadu_si256(a);                                  \
+	}                                                                      \
+	WINLINE wint##n##_t waddi##n(wint##n##_t a, wint##n##_t b)             \
+	{                                                                      \
+		return _mm256_add_epi##n(a, b);                                \
+	}                                                                      \
+	/* TODO: Replace this with something faster */                         \
+	WINLINE int##n##_t whaddi##n(wint##n##_t a)                            \
+	{                                                                      \
+		int##n##_t data[WUINT##n##_WIDTH];                             \
+		_mm256_storeu_si256((__m256i *)&data[0], a);                   \
+		int##n##_t result = 0;                                         \
+		for (size_t i = 0; i < WUINT##n##_WIDTH; i++) {                \
+			result += data[i];                                     \
+		}                                                              \
+		return result;                                                 \
+	}
+
 WUMATH_DEFINE(8)
+WIMATH_DEFINE(8)
 WUMATH_DEFINE(16)
+WIMATH_DEFINE(16)
 WUMATH_DEFINE(32)
+WIMATH_DEFINE(32)
 #define _mm256_set1_epi64 _mm256_set1_epi64x
 WUMATH_DEFINE(64)
+WIMATH_DEFINE(64)
 #undef _mm256_set1_epi64
-
 #undef WUMATH_DEFINE
+#undef WIMATH_DEFINE
 
 #endif /* WMATH_FORCE_SCALAR */
 
