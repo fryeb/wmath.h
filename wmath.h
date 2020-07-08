@@ -55,11 +55,11 @@ extern "C" {
 // WMATH_DEFINE(int32, i32, INT32)
 // WMATH_DEFINE(int64, i64, INT64)
 WMATH_DEFINE(uint8, u8, UINT8)
-// WMATH_DEFINE(uint16, u16, UINT16)
-// WMATH_DEFINE(uint32, u32, UINT32)
-// WMATH_DEFINE(uint64, u64, UINT64)
-// WMATH_DEFINE(int64, i64, INT64)
-// WMATH_DEFINE(int64, i64, INT64)
+WMATH_DEFINE(uint16, u16, UINT16)
+WMATH_DEFINE(uint32, u32, UINT32)
+WMATH_DEFINE(uint64, u64, UINT64)
+// WMATH_DEFINE(float, f, FLOAT)
+// WMATH_DEFINE(double, d, DOUBLE)
 
 #undef WMATH_DEFINE
 
@@ -95,11 +95,11 @@ WMATH_DEFINE(uint8, u8, UINT8)
 	}
 
 WUMATH_DEFINE(8)
-// WUMATH_DEFINE(16)
-// WUMATH_DEFINE(32)
-// #define _mm256_set1_epi64 _mm256_set1_epi64x
-// WUMATH_DEFINE(64)
-// #undef _mm256_set1_epi64
+WUMATH_DEFINE(16)
+WUMATH_DEFINE(32)
+#define _mm256_set1_epi64 _mm256_set1_epi64x
+WUMATH_DEFINE(64)
+#undef _mm256_set1_epi64
 
 #undef WUMATH_DEFINE
 

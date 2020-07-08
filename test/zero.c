@@ -26,19 +26,32 @@
 
 const size_t length = 65536;
 
-UTEST(zero, u8)
-{
-	ASSERT_EQ(length % WUINT8_WIDTH, 0);
+#define TEST_ZERO(t, s, max, width) \
+	UTEST(zero, s) \
+	{\
+		/* Generate List */ \
+		t##_t *data = calloc(length, sizeof(t##_t));\
+		ASSERT_EQ(length % width, 0);\
+		w##t##_t total = wset##s(0);\
+		for (size_t i = 0; i < length; i += width) {\
+			w##t##_t a = wload##s((w##t##_t*) &data[i]);\
+			total = wadd##s(total, a);\
+		}\
+		EXPECT_EQ(0, whadd##s(total));\
+	}\
 
-	uint8_t *pData = calloc(length, sizeof(uint8_t));
-	wuint8_t total = wsetu8(0);
+TEST_ZERO(uint8, u8, UINT8_MAX, WUINT8_WIDTH)
+TEST_ZERO(uint16, u16, UINT16_MAX, WUINT16_WIDTH)
+TEST_ZERO(uint32, u32, UINT32_MAX, WUINT32_WIDTH)
+TEST_ZERO(uint64, u64, UINT64_MAX, WUINT64_WIDTH)
 
-	for (size_t i = 0; i < length; i += WUINT8_WIDTH) {
-		wuint8_t a = wloadu8((wuint8_t *)&pData[i]);
-		total = waddu8(total, a);
-	}
-
-	EXPECT_EQ(0, whaddu8(total));
-}
+/** TODO
+ * TEST_ZERO(int8, i8, INT8_MAX, WINT8_WIDTH)
+ * TEST_ZERO(int16, i16, INT16_MAX, WINT16_WIDTH)
+ * TEST_ZERO(int32, i32, INT32_MAX, WINT32_WIDTH)
+ * TEST_ZERO(int64, i64, INT64_MAX, WINT64_WIDTH)
+ * TEST_ZERO(float, f, FLOAT_MAX, WFLOAT_WIDTH)
+ * TEST_ZERO(double, d, DOUBLE_MAX, WDOUBLE_WIDTH)
+ */
 
 UTEST_MAIN();
