@@ -35,3 +35,4 @@ jobs:
     - name: Build (ninja)
       run: ninja -C bin
     - name: Run tests
+      run: ninja -C bin test

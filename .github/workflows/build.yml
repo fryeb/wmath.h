@@ -14,7 +14,7 @@ jobs:
   strategy:
       matrix:
         cc: [gcc, clang]
-	cxx: [g++, clang]
+        cxx: [g++, clang]
   build:
     runs-on: ubuntu-latest
 
