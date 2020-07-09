@@ -15,7 +15,6 @@ jobs:
     strategy:
       matrix:
         cc: [gcc, clang]
-        cxx: [g++, clang]
     runs-on: ubuntu-latest
 
     steps:
@@ -34,7 +33,7 @@ jobs:
       run: meson bin
       env:
         CC: ${{ matrix.cc }}
-        CXX: ${{ matrix.cxx }}
+        CXX: ${{ matrix.cc }}
     - name: Build (ninja)
       run: ninja -C bin
     - name: Run tests
