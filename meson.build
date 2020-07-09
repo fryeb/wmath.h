@@ -53,3 +53,22 @@ foreach test_name : tests
 			c_args: '-DWMATH_FORCE_SCALAR',
 			dependencies: libm))
 endforeach
+
+benchmarks = [
+	'prefix_sum'
+]
+
+foreach bench_name : benchmarks
+	src = 'test/' + bench_name + '.c'
+
+	# Main test
+	benchmark (
+		bench_name,
+		executable(
+			'bench_' + bench_name,
+			src,
+			include_directories: includes,
+			c_args: avx_args,
+			dependencies: libm))
+endforeach
+
