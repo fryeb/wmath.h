@@ -136,63 +136,6 @@ WINLINE wdouble_t wmuld(wdouble_t a, wdouble_t b) { return _mm256_mul_pd(a, b); 
 WINLINE wfloat_t wdivf(wfloat_t a, wfloat_t b) { return _mm256_div_ps(a, b); }
 WINLINE wdouble_t wdivd(wdouble_t a, wdouble_t b) { return _mm256_div_pd(a, b); }
 
-#define WUMATH_DEFINE(n)                                                                           \
-	/* TODO: Replace this with something faster */                                             \
-	WINLINE uint##n##_t whaddu##n(wuint##n##_t a)                                              \
-	{                                                                                          \
-		uint##n##_t data[WUINT##n##_WIDTH];                                                \
-		_mm256_storeu_si256((__m256i *)&data[0], a);                                       \
-		uint##n##_t result = 0;                                                            \
-		for (size_t i = 0; i < WUINT##n##_WIDTH; i++) {                                    \
-			result += data[i];                                                         \
-		}                                                                                  \
-		return result;                                                                     \
-	}
-
-#define WIMATH_DEFINE(n)                                                                           \
-	/* TODO: Replace this with something faster */                                             \
-	WINLINE int##n##_t whaddi##n(wint##n##_t a)                                                \
-	{                                                                                          \
-		int##n##_t data[WUINT##n##_WIDTH];                                                 \
-		_mm256_storeu_si256((__m256i *)&data[0], a);                                       \
-		int##n##_t result = 0;                                                             \
-		for (size_t i = 0; i < WUINT##n##_WIDTH; i++) {                                    \
-			result += data[i];                                                         \
-		}                                                                                  \
-		return result;                                                                     \
-	}
-
-WUMATH_DEFINE(8)
-WIMATH_DEFINE(8)
-WUMATH_DEFINE(16)
-WIMATH_DEFINE(16)
-WUMATH_DEFINE(32)
-WIMATH_DEFINE(32)
-WUMATH_DEFINE(64)
-WIMATH_DEFINE(64)
-#undef WUMATH_DEFINE
-#undef WIMATH_DEFINE
-
-// TODO: Replace whaddf with something faster
-WINLINE float whaddf(wfloat_t a)
-{
-	const float *p = (float *)&a;
-	float total = 0;
-	for (size_t i = 0; i < WFLOAT_WIDTH; i++)
-		total += p[i];
-	return total;
-}
-
-// TODO: Replace whaddd with something faster
-WINLINE double whaddd(wdouble_t a)
-{
-	const double *p = (double *)&a;
-	double total = 0;
-	for (size_t i = 0; i < WDOUBLE_WIDTH; i++)
-		total += p[i];
-	return total;
-}
-
 #else // Scalar implementation
 
 #define WMATH_DEFINE(t, s, T)                                                                      \
@@ -202,7 +145,6 @@ WINLINE double whaddd(wdouble_t a)
 	WINLINE w##t##_t wload##s##u(t##_t const *addr) { return *addr; }                          \
 	WINLINE void wstore##s(t##_t *p, w##t##_t a) { *p = a; }                                   \
 	WINLINE w##t##_t wadd##s(w##t##_t a, w##t##_t b) { return a + b; }                         \
-	WINLINE t##_t whadd##s(w##t##_t a) { return a; };                                          \
 	WINLINE w##t##_t wsub##s(w##t##_t a, w##t##_t b) { return a - b; }                         \
 	WINLINE w##t##_t wmul##s(w##t##_t a, w##t##_t b) { return a * b; }                         \
 	WINLINE w##t##_t wdiv##s(w##t##_t a, w##t##_t b) { return a / b; }
@@ -224,6 +166,100 @@ WMATH_DEFINE(double, d, DOUBLE)
 
 #undef WMATH_DEFINE
 #endif /* WMATH_FORCE_SCALAR */
+
+// Portable utils
+// TODO: Replace whadd* functions with something faster
+WINLINE int8_t whaddi8(wint8_t a)
+{
+	const int8_t *p = (int8_t *)&a;
+	int8_t total = 0;
+	for (size_t i = 0; i < WINT8_WIDTH; i++)
+		total += p[i];
+	return total;
+}
+
+WINLINE int16_t whaddi16(wint16_t a)
+{
+	const int16_t *p = (int16_t *)&a;
+	int16_t total = 0;
+	for (size_t i = 0; i < WINT16_WIDTH; i++)
+		total += p[i];
+	return total;
+}
+
+WINLINE int32_t whaddi32(wint32_t a)
+{
+	const int32_t *p = (int32_t *)&a;
+	int32_t total = 0;
+	for (size_t i = 0; i < WINT32_WIDTH; i++)
+		total += p[i];
+	return total;
+}
+
+WINLINE int64_t whaddi64(wint64_t a)
+{
+	const int64_t *p = (int64_t *)&a;
+	int64_t total = 0;
+	for (size_t i = 0; i < WINT64_WIDTH; i++)
+		total += p[i];
+	return total;
+}
+
+WINLINE uint8_t whaddu8(wuint8_t a)
+{
+	const uint8_t *p = (uint8_t *)&a;
+	uint8_t total = 0;
+	for (size_t i = 0; i < WUINT8_WIDTH; i++)
+		total += p[i];
+	return total;
+}
+
+WINLINE uint16_t whaddu16(wuint16_t a)
+{
+	const uint16_t *p = (uint16_t *)&a;
+	uint16_t total = 0;
+	for (size_t i = 0; i < WUINT16_WIDTH; i++)
+		total += p[i];
+	return total;
+}
+
+WINLINE uint32_t whaddu32(wuint32_t a)
+{
+	const uint32_t *p = (uint32_t *)&a;
+	uint32_t total = 0;
+	for (size_t i = 0; i < WUINT32_WIDTH; i++)
+		total += p[i];
+	return total;
+}
+
+WINLINE uint64_t whaddu64(wuint64_t a)
+{
+	const uint64_t *p = (uint64_t *)&a;
+	uint64_t total = 0;
+	for (size_t i = 0; i < WUINT64_WIDTH; i++)
+		total += p[i];
+	return total;
+}
+
+WINLINE float whaddf(wfloat_t a)
+{
+	const float *p = (float *)&a;
+	float total = 0;
+	for (size_t i = 0; i < WFLOAT_WIDTH; i++)
+		total += p[i];
+	return total;
+}
+
+WINLINE double whaddd(wdouble_t a)
+{
+	const double *p = (double *)&a;
+	double total = 0;
+	for (size_t i = 0; i < WDOUBLE_WIDTH; i++)
+		total += p[i];
+	return total;
+}
+
+
 
 #undef WINLINE
 #ifdef __cplusplus
