@@ -31,6 +31,7 @@
 extern "C" {
 #endif
 
+#include <stddef.h>
 #include <stdint.h>
 #define WINLINE static inline
 
