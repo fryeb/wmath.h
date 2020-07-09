@@ -27,7 +27,8 @@
 #include <assert.h>
 #include <string.h>
 
-int fib(int n) {
+int fib(int n)
+{
 	assert(n >= 0);
 	if (n == 0)
 		return 0;
@@ -35,12 +36,8 @@ int fib(int n) {
 		return 1;
 	else
 		return fib(n - 1) + fib(n - 2);
-
 }
 
-UBENCH(prefix_sum, u8)
-{
-	fib(10);
-}
+UBENCH(prefix_sum, u8) { fib(10); }
 
 UBENCH_MAIN();
