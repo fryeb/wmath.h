@@ -1,3 +1,6 @@
 [submodule "vendor/utest"]
 	path = test/vendor/utest
 	url = https://github.com/sheredom/utest.h.git
+[submodule "test/vendor/ubench"]
+	path = test/vendor/ubench
+	url = https://github.com/sheredom/ubench.h.git
