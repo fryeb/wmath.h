@@ -260,8 +260,6 @@ WINLINE double whaddd(wdouble_t a)
 	return total;
 }
 
-
-
 #undef WINLINE
 #ifdef __cplusplus
 }
