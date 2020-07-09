@@ -11,11 +11,11 @@ on:
     branches: [ master ]
 
 jobs:
-  strategy:
+  build:
+    strategy:
       matrix:
         cc: [gcc, clang]
         cxx: [g++, clang]
-  build:
     runs-on: ubuntu-latest
 
     steps:
