@@ -11,6 +11,10 @@ on:
     branches: [ master ]
 
 jobs:
+  strategy:
+      matrix:
+        cc: [gcc, clang]
+	cxx: [g++, clang]
   build:
     runs-on: ubuntu-latest
 
@@ -28,6 +32,9 @@ jobs:
         pip install meson ninja
     - name: Meta-Build (meson)
       run: meson bin
+      env:
+      	CC: ${{ matrix.cc }}
+      	CXX: ${{ matrix.cxx }}
     - name: Build (ninja)
       run: ninja -C bin
     - name: Run tests
