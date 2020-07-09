@@ -33,8 +33,8 @@ jobs:
     - name: Meta-Build (meson)
       run: meson bin
       env:
-      	CC: ${{ matrix.cc }}
-      	CXX: ${{ matrix.cxx }}
+        CC: ${{ matrix.cc }}
+        CXX: ${{ matrix.cxx }}
     - name: Build (ninja)
       run: ninja -C bin
     - name: Run tests
